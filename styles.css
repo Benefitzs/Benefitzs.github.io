@@ -32,6 +32,8 @@ body {
   width: 100%;
   max-width: 1200px;
   margin-inline: auto;
+  min-height: 500px;  /* Add minimum height */
+  padding-bottom: 100px;  /* Add padding for buttons */
 }
 
 .image-1,
@@ -50,37 +52,12 @@ body {
   width: 250px;
 }
 
-/*.btn {
-  position: absolute;
-  top: calc(100% - 5rem);
-  min-width: 120px;
-  padding: 0.75rem 1rem;
-  font-size: 1.25rem;
-  outline: none;
-  border: none;
-  background-color: #f8fafc;
-  border-radius: 5px;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn-yes {
-  left: 50%;
-  transform: translateX(calc(-100% - 1rem));
-  z-index: 1;
-}
-
-.btn-no {
-  left: calc(50% + 1rem);
-  transition: all 0.5s ease;
-  z-index: 2;
-}*/
 
 .btn {
   position: absolute;
-  top: calc(100% - 5rem);
+  bottom: 2rem;  /* Change from top to bottom */
   min-width: 120px;
+  height: 45px; /* Add fixed height */
   padding: 0.75rem 1rem;
   font-size: 1.25rem;
   outline: none;
@@ -93,15 +70,15 @@ body {
 }
 
 .btn-yes {
-  left: 50%;
-  transform: translateX(calc(-100% - 1rem));
+  right: 55%;  /* Position from right instead of left */
   z-index: 1;
 }
 
 .btn-no {
-  left: calc(50% + 1rem);
-  transition: all 0.5s ease;
-  z-index: 2;
+  left: 55%;
+  transition: all 0.5s ease, top 0.3s ease-out, left 0.3s ease-out;
+  z-index: 999;
+  position: absolute; /* Change from fixed to absolute */
 }
 
 .btn:hover {

@@ -19,41 +19,62 @@ function getRandomNumber(min, max) {
   return randomNumber;
 }
 
-btnNo.addEventListener("mouseover", (event) => {
-  const containerHeight = container.getBoundingClientRect().height;
-  const containerWidth = container.getBoundingClientRect().width;
+
+
+const handleMouseOver = (event) =>  {
+  const containerRect = container.getBoundingClientRect();
   const btnHeight = btnNo.getBoundingClientRect().height;
   const btnWidth = btnNo.getBoundingClientRect().width;
-  const btnTop = btnNo.getBoundingClientRect().top;
-  const btnLeft = btnNo.getBoundingClientRect().left;
+  const padding = 20;
+  const scrollY = window.scrollY; // Get current scroll position
 
-  let newTop = btnTop;
-  let newLeft = btnLeft;
-  while (Math.abs(newTop - btnTop) < containerHeight / 3) {
-    newTop = getRandomNumber(0, containerHeight - btnHeight);
-  }
+  // Use a larger area than the container but still relative to it
+  const minTop = containerRect.top + scrollY - containerRect.height/2;
+  const maxTop = containerRect.bottom + scrollY + containerRect.height/2;
+  const minLeft = containerRect.left - containerRect.width/2;
+  const maxLeft = containerRect.right + containerRect.width/2;
 
-  while (Math.abs(newLeft - btnLeft) < containerWidth / 3) {
-    newLeft = getRandomNumber(0, containerWidth - btnWidth);
-  }
+  let newTop = getRandomNumber(
+    Math.max(padding + scrollY, minTop), 
+    Math.min(maxTop - btnHeight - padding, window.innerHeight + scrollY - btnHeight - padding)
+  );
+  let newLeft = getRandomNumber(
+    Math.max(padding, minLeft), 
+    Math.min(maxLeft - btnWidth - padding, window.innerWidth - btnWidth - padding)
+  );
 
+  btnNo.style.position = 'absolute'; // Change to absolute
+  btnNo.style.bottom = '';
   btnNo.style.top = Math.floor(newTop) + "px";
   btnNo.style.left = Math.floor(newLeft) + "px";
-});
+};
 
-btnYes.addEventListener("click", (e) => {
-  console.log("Yes button clicked");
-  btnYes.classList.add("hide");
-  hdrImg.style.display = "none";
-  imageOne.classList.add("hide");
-  imageTwo.classList.remove("hide");
-  textOverlay.classList.remove("hide");
-  btnContinue.classList.remove("hide");
-  
-  // Reset No button position
-  btnNo.style.top = "";
-  btnNo.style.left = "";
-});
+
+btnNo.addEventListener("mouseover", handleMouseOver);
+
+  btnYes.addEventListener("click", (e) => {
+    console.log("Yes button clicked");
+    btnYes.classList.add("hide");
+    hdrImg.style.display = "none";
+    imageOne.classList.add("hide");
+    imageTwo.classList.remove("hide");
+    textOverlay.classList.remove("hide");
+    btnContinue.classList.remove("hide");
+    
+    // Remove the mouseover listener temporarily
+    btnNo.removeEventListener("mouseover", handleMouseOver);
+    
+    // Reset No button position
+    btnNo.style.position = 'absolute';
+    btnNo.style.top = '';
+    btnNo.style.left = '55%';
+    btnNo.style.bottom = '2rem';
+    
+    // Re-add the mouseover listener after transition completes
+    setTimeout(() => {
+      btnNo.addEventListener("mouseover", handleMouseOver);
+    }, 500); // Match this with your CSS transition duration
+  });
 
 btnContinue.addEventListener("click", (e) => {
   imageTwo.classList.add("hide");
